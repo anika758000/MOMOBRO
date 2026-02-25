@@ -13,6 +13,7 @@
             --text-light: #ffffff;
             --success: #2ecc71;
             --warning: #f1c40f;
+            --bkash: #e2136e; /* bKash Color */
         }
 
         body { 
@@ -94,8 +95,8 @@
             <div class="stat-box"><small style="color:var(--success)">Today Sale</small><h3 id="today-income">৳ 0</h3></div>
             <div class="stat-box"><small style="color:var(--primary)">Today Exp</small><h3 id="today-expense">৳ 0</h3></div>
             
-            <div class="stat-box"><small style="color:var(--warning)">Yest. Sale</small><h3 id="yest-income">৳ 0</h3></div>
-            <div class="stat-box"><small style="color:var(--warning)">Yest. Exp</small><h3 id="yest-expense">৳ 0</h3></div>
+            <div class="stat-box" style="border-color: var(--bkash);"><small style="color:var(--bkash)">bKash Cash In (Month)</small><h3 id="bkash-in-month">৳ 0</h3></div>
+            <div class="stat-box" style="border-color: var(--bkash);"><small style="color:var(--bkash)">Current bKash Bal</small><h3 id="bkash-balance">৳ 0</h3></div>
 
             <div class="stat-box"><small style="color:var(--success)">Total Income</small><h3 id="total-income">৳ 0</h3></div>
             <div class="stat-box"><small style="color:var(--primary)">Total Expense</small><h3 id="total-expense">৳ 0</h3></div>
@@ -106,8 +107,8 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab('main-tab', this)">CASH BOOK</button>
+            <button class="tab-btn" onclick="openTab('bkash-tab', this)">BKASH</button>
             <button class="tab-btn" onclick="openTab('due-tab', this)">DUE LIST</button>
-            <button class="tab-btn" onclick="openTab('settings-tab', this)">SETTINGS</button>
         </div>
 
         <div id="main-tab" class="section active">
@@ -123,6 +124,23 @@
             <div class="history-card"><div id="history-list"></div></div>
         </div>
 
+        <div id="bkash-tab" class="section">
+            <div class="input-group" style="border-color: var(--bkash);">
+                <h3 style="color:var(--bkash); font-size:14px; margin-top:0;">bKash Management</h3>
+                <input type="number" id="bk-amount" placeholder="৳ bKash Amount">
+                <input type="text" id="bk-note" placeholder="Note (e.g. Cash In/Out)">
+                <select id="bk-type">
+                    <option value="bk-in">Cash In (বিকাশে ঢুকেছে)</option>
+                    <option value="bk-out">Cash Out (বিকাশ থেকে খরচ)</option>
+                </select>
+                <button class="btn-add" style="background:var(--bkash);" onclick="addBkashData()">Save bKash Record</button>
+            </div>
+            <div class="history-card">
+                <p style="font-size:10px; color:var(--bkash);">BKASH HISTORY</p>
+                <div id="bkash-list"></div>
+            </div>
+        </div>
+
         <div id="due-tab" class="section">
             <div class="input-group">
                 <input type="text" id="cust-name" placeholder="Customer Name">
@@ -131,33 +149,20 @@
             </div>
             <div class="history-card"><div id="due-list"></div></div>
         </div>
-
-        <div id="settings-tab" class="section">
-            <div class="input-group">
-                <h3 style="color:var(--primary); font-size:14px;">Update Shop Logo</h3>
-                <input type="text" id="logo-url-input" placeholder="Paste Logo Image URL">
-                <button class="btn-add" style="background:#333;" onclick="updateLogo()">Save Logo</button>
-            </div>
-            <div class="input-group">
-                <h3 style="color:var(--primary); font-size:14px;">Security PIN</h3>
-                <input type="password" id="new-pin" maxlength="4" placeholder="New PIN">
-                <button class="btn-add" onclick="changePin()">Update PIN</button>
-            </div>
-            <button class="btn-add" style="background:#222;" onclick="location.reload()">Logout</button>
-        </div>
     </div>
 
     <script>
         const BIN_ID = "699cce7a43b1c97be997a6e2"; 
         const API_KEY = "$2a$10$vf8UEF8J/onBkBXNtIGeWeArUVDP11F8MFKgUTN3unFs8jYTUcIpO";
         
-        let appData = { records: [], dues: [], pin: "1234", logo: "https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg" };
+        let appData = { records: [], dues: [], bkash: [], pin: "1234", logo: "https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg" };
 
         async function syncData() {
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
                 const data = await res.json();
                 appData = data.record;
+                if(!appData.bkash) appData.bkash = []; 
                 document.getElementById('shop-logo').src = appData.logo || "https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg";
                 updateUI();
             } catch (e) { console.log("Load Error"); }
@@ -170,29 +175,6 @@
                 document.getElementById('main-content').style.display = 'block';
                 setInterval(syncData, 15000); 
             } else { alert("Wrong PIN!"); }
-        }
-
-        async function updateLogo() {
-            let newUrl = document.getElementById('logo-url-input').value;
-            if(newUrl) {
-                if(newUrl.includes("postimg.cc") && !newUrl.includes("i.postimg.cc")) {
-                    let parts = newUrl.split("/");
-                    let id = parts[parts.length-1];
-                    newUrl = `https://i.postimg.cc/${id}/logo.png`; 
-                }
-                appData.logo = newUrl;
-                await saveCloud();
-                document.getElementById('shop-logo').src = newUrl;
-                alert("Logo Updated!");
-            }
-        }
-
-        async function emergencyReset() {
-            if(confirm("Reset PIN to 1234?")) {
-                appData.pin = "1234";
-                await saveCloud();
-                location.reload();
-            }
         }
 
         function openTab(tabId, btn) {
@@ -222,6 +204,24 @@
             document.getElementById('amount').value = ''; document.getElementById('note').value = '';
         }
 
+        function addBkashData() {
+            const amount = parseFloat(document.getElementById('bk-amount').value);
+            const note = document.getElementById('bk-note').value;
+            const type = document.getElementById('bk-type').value;
+            if(!amount || !note) return;
+            appData.bkash.unshift({ 
+                id: Date.now(), 
+                amount, 
+                note, 
+                type, 
+                date: new Date().toLocaleDateString('en-GB'),
+                month: new Date().getMonth() + 1,
+                year: new Date().getFullYear()
+            });
+            updateUI(); saveCloud();
+            document.getElementById('bk-amount').value = ''; document.getElementById('bk-note').value = '';
+        }
+
         function addDue() {
             const name = document.getElementById('cust-name').value;
             const amount = parseFloat(document.getElementById('due-amount').value);
@@ -231,35 +231,48 @@
             document.getElementById('cust-name').value = ''; document.getElementById('due-amount').value = '';
         }
 
-        function changePin() {
-            const pin = document.getElementById('new-pin').value;
-            if(pin.length === 4) { appData.pin = pin; saveCloud(); alert("PIN Updated!"); }
-            else { alert("PIN must be 4 digits"); }
-        }
-
-        function deleteRecord(id, type) {
+        function deleteRecord(id, category) {
             if(!confirm("Delete?")) return;
-            if(type === 'cash') appData.records = appData.records.filter(r => r.id !== id);
-            else appData.dues = appData.dues.filter(r => r.id !== id);
+            if(category === 'cash') appData.records = appData.records.filter(r => r.id !== id);
+            else if(category === 'due') appData.dues = appData.dues.filter(r => r.id !== id);
+            else if(category === 'bkash') appData.bkash = appData.bkash.filter(r => r.id !== id);
             updateUI(); saveCloud();
         }
 
         function updateUI() {
-            let totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0, yestInc = 0, yestExp = 0, totalDue = 0;
+            let totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0, totalDue = 0;
+            let bkInMonth = 0, bkTotalBal = 0;
             const today = new Date().toLocaleDateString('en-GB');
-            const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-            const yest = yesterdayDate.toLocaleDateString('en-GB');
+            const currentMonth = new Date().getMonth() + 1;
+            const currentYear = new Date().getFullYear();
 
+            // Cash List
             const list = document.getElementById('history-list'); list.innerHTML = '';
             (appData.records || []).forEach(r => {
-                if(r.type === 'income') { totalInc += r.amount; if(r.date === today) todayInc += r.amount; if(r.date === yest) yestInc += r.amount; }
-                else { totalExp += r.amount; if(r.date === today) todayExp += r.amount; if(r.date === yest) yestExp += r.amount; }
+                if(r.type === 'income') { totalInc += r.amount; if(r.date === today) todayInc += r.amount; }
+                else { totalExp += r.amount; if(r.date === today) todayExp += r.amount; }
                 list.innerHTML += `<div class="item">
                     <div><b style="color:#eee">${r.note}</b><br><small style="color:#444">${r.date}</small></div>
                     <div style="color:${r.type==='income'?'#2ecc71':'#ff4b2b'}; font-weight:bold">৳${r.amount} <button class="del-btn" onclick="deleteRecord(${r.id}, 'cash')">×</button></div>
                 </div>`;
             });
 
+            // bKash List & Logic
+            const bkList = document.getElementById('bkash-list'); bkList.innerHTML = '';
+            (appData.bkash || []).forEach(b => {
+                if(b.type === 'bk-in') {
+                    bkTotalBal += b.amount;
+                    if(b.month === currentMonth && b.year === currentYear) bkInMonth += b.amount;
+                } else {
+                    bkTotalBal -= b.amount;
+                }
+                bkList.innerHTML += `<div class="item">
+                    <div><b style="color:#eee">${b.note}</b><br><small style="color:#444">${b.date}</small></div>
+                    <div style="color:${b.type==='bk-in'?'#e2136e':'#ff4b2b'}; font-weight:bold">৳${b.amount} <button class="del-btn" onclick="deleteRecord(${b.id}, 'bkash')">×</button></div>
+                </div>`;
+            });
+
+            // Dues
             const dList = document.getElementById('due-list'); dList.innerHTML = '';
             (appData.dues || []).forEach(d => {
                 totalDue += d.amount;
@@ -269,16 +282,17 @@
                 </div>`;
             });
 
-            // ক্যালকুলেশন
             document.getElementById('today-net-profit').innerText = `৳ ${todayInc - todayExp}`;
             document.getElementById('total-profit').innerText = `৳ ${totalInc - totalExp}`;
             document.getElementById('total-income').innerText = `৳ ${totalInc}`;
             document.getElementById('total-expense').innerText = `৳ ${totalExp}`;
             document.getElementById('today-income').innerText = `৳ ${todayInc}`;
             document.getElementById('today-expense').innerText = `৳ ${todayExp}`;
-            document.getElementById('yest-income').innerText = `৳ ${yestInc}`;
-            document.getElementById('yest-expense').innerText = `৳ ${yestExp}`;
             document.getElementById('total-due-stat').innerText = `৳ ${totalDue}`;
+            
+            // Update bKash Stats
+            document.getElementById('bkash-in-month').innerText = `৳ ${bkInMonth}`;
+            document.getElementById('bkash-balance').innerText = `৳ ${bkTotalBal}`;
         }
 
         function showToast(msg) {
