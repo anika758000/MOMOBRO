@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOMO BRO - Black Edition</title>
+    <style>
+        :root { 
+            --primary: #FF4B2B; 
+            --secondary: #FF416C; 
+            --dark-bg: #0a0a0a;
+            --dark-glass: rgba(20, 20, 20, 0.95);
+            --text-light: #ffffff;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+        }
+
+        body { 
+            font-family: 'Poppins', 'Segoe UI', sans-serif; 
+            margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
+        }
+        #login-screen input { width: 220px; text-align: center; font-size: 20px; letter-spacing: 5px; margin-bottom: 15px; padding: 12px; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; outline: none; }
+        
+        #main-content { display: none; width: 100%; max-width: 380px; }
+
+        .logo-container { text-align: center; margin-top: 15px; }
+        #shop-logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; margin: 0 auto; box-shadow: 0 0 15px rgba(255, 75, 43, 0.4); background: #000; display: block; }
+
+        h1 { color: var(--primary); font-size: 1.4rem; margin: 10px 0; text-align: center; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; }
+        
+        .balance-card { 
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            width: 100%; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 15px; 
+            border: 1px solid #222; box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .balance-card h2 { font-size: 2rem; margin: 5px 0; font-weight: 800; color: var(--primary); }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 15px; }
+        .stat-box { background: var(--dark-glass); padding: 12px; border-radius: 15px; text-align: center; border: 1px solid #222; }
+        .stat-box small { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-box h3 { margin: 5px 0; font-size: 1.1rem; font-weight: 700; }
+
+        .tabs { display: flex; gap: 5px; width: 100%; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #222; background: #111; color: #888; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 75, 43, 0.4); }
+
+        .section { display: none; width: 100%; }
+        .section.active { display: block; }
+
+        .input-group { background: var(--dark-glass); padding: 20px; border-radius: 20px; width: 100%; margin-bottom: 15px; box-sizing: border-box; border: 1px solid #222; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; background: #000; color: white; border: 1px solid #333; font-size: 14px; box-sizing: border-box; outline: none; }
+        .btn-add { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+
+        .history-card { background: var(--dark-glass); border-radius: 20px; padding: 15px; width: 100%; box-sizing: border-box; margin-bottom: 40px; border: 1px solid #222; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
+        .del-btn { color: #444; cursor: pointer; background: none; border: none; font-size: 18px; }
+
+        #update-toast { position: fixed; top: 20px; background: var(--primary); color: white; padding: 10px 25px; border-radius: 30px; font-size: 12px; display: none; z-index: 1000; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="update-toast">SYNCING LIVE...</div>
+
+    <div id="login-screen">
+        <h2 style="color: var(--primary); letter-spacing: 5px;">MOMO BRO</h2>
+        <p style="color: #444; font-size: 12px; margin-bottom: 20px;">ENTER ADMIN PIN</p>
+        <input type="password" id="pin-input" maxlength="4" placeholder="****">
+        <button class="btn-add" style="width: 160px; margin-bottom: 15px;" onclick="checkPin()">Login</button>
+        <button onclick="emergencyReset()" style="background:none; border:none; color:#333; font-size:10px; text-decoration:underline; cursor:pointer;">Emergency Reset (1234)</button>
+    </div>
+
+    <div id="main-content">
+        <div class="logo-container">
+            <img id="shop-logo" src="https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg" alt="LOGO">
+        </div>
+        
+        <h1>MOMO BRO</h1>
+
+        <div class="balance-card">
+            <small style="color: var(--success);">TODAY'S NET PROFIT</small>
+            <h2 id="today-net-profit">৳ 0</h2>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box"><small style="color:var(--success)">Today Sale</small><h3 id="today-income">৳ 0</h3></div>
+            <div class="stat-box"><small style="color:var(--primary)">Today Exp</small><h3 id="today-expense">৳ 0</h3></div>
+            
+            <div class="stat-box"><small style="color:var(--warning)">Yest. Sale</small><h3 id="yest-income">৳ 0</h3></div>
+            <div class="stat-box"><small style="color:var(--warning)">Yest. Exp</small><h3 id="yest-expense">৳ 0</h3></div>
+
+            <div class="stat-box"><small style="color:var(--success)">Total Income</small><h3 id="total-income">৳ 0</h3></div>
+            <div class="stat-box"><small style="color:var(--primary)">Total Expense</small><h3 id="total-expense">৳ 0</h3></div>
+            
+            <div class="stat-box" style="border-color: var(--success);"><small style="color:var(--success)">Total Profit</small><h3 id="total-profit">৳ 0</h3></div>
+            <div class="stat-box" style="border-color: var(--warning);"><small style="color:var(--warning)">Total Due (বাকি)</small><h3 id="total-due-stat">৳ 0</h3></div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('main-tab', this)">CASH BOOK</button>
+            <button class="tab-btn" onclick="openTab('due-tab', this)">DUE LIST</button>
+            <button class="tab-btn" onclick="openTab('settings-tab', this)">SETTINGS</button>
+        </div>
+
+        <div id="main-tab" class="section active">
+            <div class="input-group">
+                <input type="number" id="amount" placeholder="৳ Amount">
+                <input type="text" id="note" placeholder="Note">
+                <select id="type">
+                    <option value="income">Income (+)</option>
+                    <option value="expense">Expense (-)</option>
+                </select>
+                <button class="btn-add" onclick="addData()">Save Transaction</button>
+            </div>
+            <div class="history-card"><div id="history-list"></div></div>
+        </div>
+
+        <div id="due-tab" class="section">
+            <div class="input-group">
+                <input type="text" id="cust-name" placeholder="Customer Name">
+                <input type="number" id="due-amount" placeholder="Due Amount">
+                <button class="btn-add" style="background:#f1c40f; color:#000;" onclick="addDue()">Add to Baki Khata</button>
+            </div>
+            <div class="history-card"><div id="due-list"></div></div>
+        </div>
+
+        <div id="settings-tab" class="section">
+            <div class="input-group">
+                <h3 style="color:var(--primary); font-size:14px;">Update Shop Logo</h3>
+                <input type="text" id="logo-url-input" placeholder="Paste Logo Image URL">
+                <button class="btn-add" style="background:#333;" onclick="updateLogo()">Save Logo</button>
+            </div>
+            <div class="input-group">
+                <h3 style="color:var(--primary); font-size:14px;">Security PIN</h3>
+                <input type="password" id="new-pin" maxlength="4" placeholder="New PIN">
+                <button class="btn-add" onclick="changePin()">Update PIN</button>
+            </div>
+            <button class="btn-add" style="background:#222;" onclick="location.reload()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        const BIN_ID = "699cce7a43b1c97be997a6e2"; 
+        const API_KEY = "$2a$10$vf8UEF8J/onBkBXNtIGeWeArUVDP11F8MFKgUTN3unFs8jYTUcIpO";
+        
+        let appData = { records: [], dues: [], pin: "1234", logo: "https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg" };
+
+        async function syncData() {
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+                const data = await res.json();
+                appData = data.record;
+                document.getElementById('shop-logo').src = appData.logo || "https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg";
+                updateUI();
+            } catch (e) { console.log("Load Error"); }
+        }
+
+        async function checkPin() {
+            await syncData();
+            if(document.getElementById('pin-input').value === appData.pin) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                setInterval(syncData, 15000); 
+            } else { alert("Wrong PIN!"); }
+        }
+
+        async function updateLogo() {
+            let newUrl = document.getElementById('logo-url-input').value;
+            if(newUrl) {
+                if(newUrl.includes("postimg.cc") && !newUrl.includes("i.postimg.cc")) {
+                    let parts = newUrl.split("/");
+                    let id = parts[parts.length-1];
+                    newUrl = `https://i.postimg.cc/${id}/logo.png`; 
+                }
+                appData.logo = newUrl;
+                await saveCloud();
+                document.getElementById('shop-logo').src = newUrl;
+                alert("Logo Updated!");
+            }
+        }
+
+        async function emergencyReset() {
+            if(confirm("Reset PIN to 1234?")) {
+                appData.pin = "1234";
+                await saveCloud();
+                location.reload();
+            }
+        }
+
+        function openTab(tabId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        async function saveCloud() {
+            showToast("SYNCING...");
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                body: JSON.stringify(appData)
+            });
+            showToast("SYNCED ✅");
+        }
+
+        function addData() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const note = document.getElementById('note').value;
+            const type = document.getElementById('type').value;
+            if(!amount || !note) return;
+            appData.records.unshift({ id: Date.now(), amount, note, type, date: new Date().toLocaleDateString('en-GB') });
+            updateUI(); saveCloud();
+            document.getElementById('amount').value = ''; document.getElementById('note').value = '';
+        }
+
+        function addDue() {
+            const name = document.getElementById('cust-name').value;
+            const amount = parseFloat(document.getElementById('due-amount').value);
+            if(!name || !amount) return;
+            appData.dues.unshift({ id: Date.now(), name, amount, date: new Date().toLocaleDateString('en-GB') });
+            updateUI(); saveCloud();
+            document.getElementById('cust-name').value = ''; document.getElementById('due-amount').value = '';
+        }
+
+        function changePin() {
+            const pin = document.getElementById('new-pin').value;
+            if(pin.length === 4) { appData.pin = pin; saveCloud(); alert("PIN Updated!"); }
+            else { alert("PIN must be 4 digits"); }
+        }
+
+        function deleteRecord(id, type) {
+            if(!confirm("Delete?")) return;
+            if(type === 'cash') appData.records = appData.records.filter(r => r.id !== id);
+            else appData.dues = appData.dues.filter(r => r.id !== id);
+            updateUI(); saveCloud();
+        }
+
+        function updateUI() {
+            let totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0, yestInc = 0, yestExp = 0, totalDue = 0;
+            const today = new Date().toLocaleDateString('en-GB');
+            const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+            const yest = yesterdayDate.toLocaleDateString('en-GB');
+
+            const list = document.getElementById('history-list'); list.innerHTML = '';
+            (appData.records || []).forEach(r => {
+                if(r.type === 'income') { totalInc += r.amount; if(r.date === today) todayInc += r.amount; if(r.date === yest) yestInc += r.amount; }
+                else { totalExp += r.amount; if(r.date === today) todayExp += r.amount; if(r.date === yest) yestExp += r.amount; }
+                list.innerHTML += `<div class="item">
+                    <div><b style="color:#eee">${r.note}</b><br><small style="color:#444">${r.date}</small></div>
+                    <div style="color:${r.type==='income'?'#2ecc71':'#ff4b2b'}; font-weight:bold">৳${r.amount} <button class="del-btn" onclick="deleteRecord(${r.id}, 'cash')">×</button></div>
+                </div>`;
+            });
+
+            const dList = document.getElementById('due-list'); dList.innerHTML = '';
+            (appData.dues || []).forEach(d => {
+                totalDue += d.amount;
+                dList.innerHTML += `<div class="item">
+                    <div><b style="color:#eee">${d.name}</b><br><small style="color:#444">${d.date}</small></div>
+                    <div style="color:#f1c40f; font-weight:bold">৳${d.amount} <button class="del-btn" onclick="deleteRecord(${d.id}, 'due')">×</button></div>
+                </div>`;
+            });
+
+            // ক্যালকুলেশন
+            document.getElementById('today-net-profit').innerText = `৳ ${todayInc - todayExp}`;
+            document.getElementById('total-profit').innerText = `৳ ${totalInc - totalExp}`;
+            document.getElementById('total-income').innerText = `৳ ${totalInc}`;
+            document.getElementById('total-expense').innerText = `৳ ${totalExp}`;
+            document.getElementById('today-income').innerText = `৳ ${todayInc}`;
+            document.getElementById('today-expense').innerText = `৳ ${todayExp}`;
+            document.getElementById('yest-income').innerText = `৳ ${yestInc}`;
+            document.getElementById('yest-expense').innerText = `৳ ${yestExp}`;
+            document.getElementById('total-due-stat').innerText = `৳ ${totalDue}`;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('update-toast');
+            t.innerText = msg; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+        window.onload = syncData;
+    </script>
+</body>
+</html>
