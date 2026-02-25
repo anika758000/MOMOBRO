@@ -7,13 +7,12 @@
     <style>
         :root { 
             --primary: #FF4B2B; 
-            --secondary: #FF416C; 
             --dark-bg: #0a0a0a;
             --dark-glass: rgba(20, 20, 20, 0.95);
             --text-light: #ffffff;
             --success: #2ecc71;
             --warning: #f1c40f;
-            --bkash: #e2136e; /* bKash Color */
+            --bkash: #e2136e; 
         }
 
         body { 
@@ -31,40 +30,39 @@
         
         #main-content { display: none; width: 100%; max-width: 380px; }
 
-        .logo-container { text-align: center; margin-top: 15px; }
-        #shop-logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; margin: 0 auto; box-shadow: 0 0 15px rgba(255, 75, 43, 0.4); background: #000; display: block; }
+        .logo-container { text-align: center; margin-top: 10px; }
+        #shop-logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; margin: 0 auto; box-shadow: 0 0 15px rgba(255, 75, 43, 0.4); background: #000; display: block; }
 
-        h1 { color: var(--primary); font-size: 1.4rem; margin: 10px 0; text-align: center; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; }
+        h1 { color: var(--primary); font-size: 1.2rem; margin: 8px 0; text-align: center; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; }
         
         .balance-card { 
             background: linear-gradient(135deg, #1a1a1a, #000);
-            width: 100%; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 15px; 
+            width: 100%; padding: 15px; border-radius: 20px; text-align: center; margin-bottom: 10px; 
             border: 1px solid #222; box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .balance-card h2 { font-size: 2rem; margin: 5px 0; font-weight: 800; color: var(--primary); }
+        .balance-card h2 { font-size: 1.6rem; margin: 5px 0; font-weight: 800; color: var(--primary); }
         
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 15px; }
-        .stat-box { background: var(--dark-glass); padding: 12px; border-radius: 15px; text-align: center; border: 1px solid #222; }
-        .stat-box small { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-box h3 { margin: 5px 0; font-size: 1.1rem; font-weight: 700; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; margin-bottom: 15px; }
+        .stat-box { background: var(--dark-glass); padding: 8px; border-radius: 12px; text-align: center; border: 1px solid #222; }
+        .stat-box small { font-size: 8px; opacity: 0.7; text-transform: uppercase; }
+        .stat-box h3 { margin: 2px 0; font-size: 0.95rem; font-weight: 700; }
 
-        .tabs { display: flex; gap: 5px; width: 100%; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #222; background: #111; color: #888; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; }
-        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 75, 43, 0.4); }
+        .tabs { display: flex; gap: 4px; width: 100%; margin-bottom: 12px; }
+        .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #222; background: #111; color: #888; cursor: pointer; font-weight: bold; font-size: 9px; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
         .section { display: none; width: 100%; }
         .section.active { display: block; }
 
-        .input-group { background: var(--dark-glass); padding: 20px; border-radius: 20px; width: 100%; margin-bottom: 15px; box-sizing: border-box; border: 1px solid #222; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; background: #000; color: white; border: 1px solid #333; font-size: 14px; box-sizing: border-box; outline: none; }
-        .btn-add { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .input-group { background: var(--dark-glass); padding: 15px; border-radius: 20px; width: 100%; margin-bottom: 15px; box-sizing: border-box; border: 1px solid #222; }
+        input, select { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; background: #000; color: white; border: 1px solid #333; font-size: 13px; box-sizing: border-box; outline: none; }
+        .btn-add { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 12px; }
 
-        .history-card { background: var(--dark-glass); border-radius: 20px; padding: 15px; width: 100%; box-sizing: border-box; margin-bottom: 40px; border: 1px solid #222; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
-        .del-btn { color: #444; cursor: pointer; background: none; border: none; font-size: 18px; }
+        .history-card { background: var(--dark-glass); border-radius: 20px; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 40px; border: 1px solid #222; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #1a1a1a; }
+        .del-btn { color: #444; cursor: pointer; background: none; border: none; font-size: 16px; }
 
-        #update-toast { position: fixed; top: 20px; background: var(--primary); color: white; padding: 10px 25px; border-radius: 30px; font-size: 12px; display: none; z-index: 1000; font-weight: bold; }
+        #update-toast { position: fixed; top: 20px; background: var(--primary); color: white; padding: 8px 20px; border-radius: 30px; font-size: 11px; display: none; z-index: 1000; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -73,17 +71,13 @@
 
     <div id="login-screen">
         <h2 style="color: var(--primary); letter-spacing: 5px;">MOMO BRO</h2>
-        <p style="color: #444; font-size: 12px; margin-bottom: 20px;">ENTER ADMIN PIN</p>
         <input type="password" id="pin-input" maxlength="4" placeholder="****">
         <button class="btn-add" style="width: 160px; margin-bottom: 15px;" onclick="checkPin()">Login</button>
-        <button onclick="emergencyReset()" style="background:none; border:none; color:#333; font-size:10px; text-decoration:underline; cursor:pointer;">Emergency Reset (1234)</button>
+        <button onclick="emergencyReset()" style="background:none; border:none; color:#333; font-size:10px; text-decoration:underline; cursor:pointer;">Reset (1234)</button>
     </div>
 
     <div id="main-content">
-        <div class="logo-container">
-            <img id="shop-logo" src="https://i.postimg.cc/tJnNf4v7/Untitled-design-1.jpg" alt="LOGO">
-        </div>
-        
+        <div class="logo-container"><img id="shop-logo" src="" alt="LOGO"></div>
         <h1>MOMO BRO</h1>
 
         <div class="balance-card">
@@ -94,60 +88,61 @@
         <div class="stats-grid">
             <div class="stat-box"><small style="color:var(--success)">Today Sale</small><h3 id="today-income">৳ 0</h3></div>
             <div class="stat-box"><small style="color:var(--primary)">Today Exp</small><h3 id="today-expense">৳ 0</h3></div>
-            
-            <div class="stat-box" style="border-color: var(--bkash);"><small style="color:var(--bkash)">bKash Cash In (Month)</small><h3 id="bkash-in-month">৳ 0</h3></div>
-            <div class="stat-box" style="border-color: var(--bkash);"><small style="color:var(--bkash)">Current bKash Bal</small><h3 id="bkash-balance">৳ 0</h3></div>
-
-            <div class="stat-box"><small style="color:var(--success)">Total Income</small><h3 id="total-income">৳ 0</h3></div>
-            <div class="stat-box"><small style="color:var(--primary)">Total Expense</small><h3 id="total-expense">৳ 0</h3></div>
-            
+            <div class="stat-box"><small style="color:var(--warning)">Yest. Sale</small><h3 id="yest-income">৳ 0</h3></div>
+            <div class="stat-box"><small style="color:var(--warning)">Yest. Exp</small><h3 id="yest-expense">৳ 0</h3></div>
+            <div class="stat-box" style="border-color: var(--bkash);"><small style="color:var(--bkash)">bKash Month In</small><h3 id="bkash-in-month">৳ 0</h3></div>
+            <div class="stat-box" style="border-color: var(--bkash);"><small style="color:var(--bkash)">bKash Bal</small><h3 id="bkash-balance">৳ 0</h3></div>
+            <div class="stat-box"><small style="color:var(--success)">Total Sale</small><h3 id="total-income">৳ 0</h3></div>
+            <div class="stat-box"><small style="color:var(--primary)">Total Exp</small><h3 id="total-expense">৳ 0</h3></div>
             <div class="stat-box" style="border-color: var(--success);"><small style="color:var(--success)">Total Profit</small><h3 id="total-profit">৳ 0</h3></div>
-            <div class="stat-box" style="border-color: var(--warning);"><small style="color:var(--warning)">Total Due (বাকি)</small><h3 id="total-due-stat">৳ 0</h3></div>
+            <div class="stat-box" style="border-color: var(--warning);"><small style="color:var(--warning)">Total Baki</small><h3 id="total-due-stat">৳ 0</h3></div>
         </div>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab('main-tab', this)">CASH BOOK</button>
             <button class="tab-btn" onclick="openTab('bkash-tab', this)">BKASH</button>
             <button class="tab-btn" onclick="openTab('due-tab', this)">DUE LIST</button>
+            <button class="tab-btn" onclick="openTab('settings-tab', this)">SETTINGS</button>
         </div>
 
         <div id="main-tab" class="section active">
             <div class="input-group">
                 <input type="number" id="amount" placeholder="৳ Amount">
                 <input type="text" id="note" placeholder="Note">
-                <select id="type">
-                    <option value="income">Income (+)</option>
-                    <option value="expense">Expense (-)</option>
-                </select>
-                <button class="btn-add" onclick="addData()">Save Transaction</button>
+                <select id="type"><option value="income">Income (+)</option><option value="expense">Expense (-)</option></select>
+                <button class="btn-add" onclick="addData()">Save</button>
             </div>
             <div class="history-card"><div id="history-list"></div></div>
         </div>
 
         <div id="bkash-tab" class="section">
             <div class="input-group" style="border-color: var(--bkash);">
-                <h3 style="color:var(--bkash); font-size:14px; margin-top:0;">bKash Management</h3>
                 <input type="number" id="bk-amount" placeholder="৳ bKash Amount">
-                <input type="text" id="bk-note" placeholder="Note (e.g. Cash In/Out)">
-                <select id="bk-type">
-                    <option value="bk-in">Cash In (বিকাশে ঢুকেছে)</option>
-                    <option value="bk-out">Cash Out (বিকাশ থেকে খরচ)</option>
-                </select>
-                <button class="btn-add" style="background:var(--bkash);" onclick="addBkashData()">Save bKash Record</button>
+                <input type="text" id="bk-note" placeholder="Note">
+                <select id="bk-type"><option value="bk-in">Cash In</option><option value="bk-out">Cash Out</option></select>
+                <button class="btn-add" style="background:var(--bkash);" onclick="addBkashData()">Save bKash</button>
             </div>
-            <div class="history-card">
-                <p style="font-size:10px; color:var(--bkash);">BKASH HISTORY</p>
-                <div id="bkash-list"></div>
-            </div>
+            <div class="history-card"><div id="bkash-list"></div></div>
         </div>
 
         <div id="due-tab" class="section">
             <div class="input-group">
-                <input type="text" id="cust-name" placeholder="Customer Name">
-                <input type="number" id="due-amount" placeholder="Due Amount">
-                <button class="btn-add" style="background:#f1c40f; color:#000;" onclick="addDue()">Add to Baki Khata</button>
+                <input type="text" id="cust-name" placeholder="Name">
+                <input type="number" id="due-amount" placeholder="Due">
+                <button class="btn-add" style="background:#f1c40f; color:#000;" onclick="addDue()">Add Baki</button>
             </div>
             <div class="history-card"><div id="due-list"></div></div>
+        </div>
+
+        <div id="settings-tab" class="section">
+            <div class="input-group">
+                <h3 style="color:var(--primary); font-size:13px; margin:0 0 10px 0;">Settings</h3>
+                <input type="text" id="logo-url-input" placeholder="Logo Image URL">
+                <button class="btn-add" style="background:#333; margin-bottom:10px;" onclick="updateLogo()">Update Logo</button>
+                <input type="password" id="new-pin" maxlength="4" placeholder="New PIN">
+                <button class="btn-add" onclick="changePin()">Change PIN</button>
+            </div>
+            <button class="btn-add" style="background:#222;" onclick="location.reload()">Logout</button>
         </div>
     </div>
 
@@ -210,10 +205,7 @@
             const type = document.getElementById('bk-type').value;
             if(!amount || !note) return;
             appData.bkash.unshift({ 
-                id: Date.now(), 
-                amount, 
-                note, 
-                type, 
+                id: Date.now(), amount, note, type, 
                 date: new Date().toLocaleDateString('en-GB'),
                 month: new Date().getMonth() + 1,
                 year: new Date().getFullYear()
@@ -231,6 +223,16 @@
             document.getElementById('cust-name').value = ''; document.getElementById('due-amount').value = '';
         }
 
+        function updateLogo() {
+            const url = document.getElementById('logo-url-input').value;
+            if(url) { appData.logo = url; saveCloud(); document.getElementById('shop-logo').src = url; alert("Logo Updated!"); }
+        }
+
+        function changePin() {
+            const pin = document.getElementById('new-pin').value;
+            if(pin.length === 4) { appData.pin = pin; saveCloud(); alert("PIN Updated!"); }
+        }
+
         function deleteRecord(id, category) {
             if(!confirm("Delete?")) return;
             if(category === 'cash') appData.records = appData.records.filter(r => r.id !== id);
@@ -239,67 +241,50 @@
             updateUI(); saveCloud();
         }
 
+        function emergencyReset() {
+            if(confirm("Reset PIN to 1234?")) { appData.pin = "1234"; saveCloud(); location.reload(); }
+        }
+
         function updateUI() {
-            let totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0, totalDue = 0;
+            let totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0, yestInc = 0, yestExp = 0, totalDue = 0;
             let bkInMonth = 0, bkTotalBal = 0;
             const today = new Date().toLocaleDateString('en-GB');
+            const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+            const yest = yesterdayDate.toLocaleDateString('en-GB');
             const currentMonth = new Date().getMonth() + 1;
             const currentYear = new Date().getFullYear();
 
-            // Cash List
             const list = document.getElementById('history-list'); list.innerHTML = '';
             (appData.records || []).forEach(r => {
-                if(r.type === 'income') { totalInc += r.amount; if(r.date === today) todayInc += r.amount; }
-                else { totalExp += r.amount; if(r.date === today) todayExp += r.amount; }
-                list.innerHTML += `<div class="item">
-                    <div><b style="color:#eee">${r.note}</b><br><small style="color:#444">${r.date}</small></div>
-                    <div style="color:${r.type==='income'?'#2ecc71':'#ff4b2b'}; font-weight:bold">৳${r.amount} <button class="del-btn" onclick="deleteRecord(${r.id}, 'cash')">×</button></div>
-                </div>`;
+                if(r.type === 'income') { totalInc += r.amount; if(r.date === today) todayInc += r.amount; if(r.date === yest) yestInc += r.amount; }
+                else { totalExp += r.amount; if(r.date === today) todayExp += r.amount; if(r.date === yest) yestExp += r.amount; }
+                list.innerHTML += `<div class="item"><div><b>${r.note}</b><br><small>${r.date}</small></div><div style="color:${r.type==='income'?'#2ecc71':'#ff4b2b'}; font-weight:bold">৳${r.amount} <button class="del-btn" onclick="deleteRecord(${r.id}, 'cash')">×</button></div></div>`;
             });
 
-            // bKash List & Logic
             const bkList = document.getElementById('bkash-list'); bkList.innerHTML = '';
             (appData.bkash || []).forEach(b => {
-                if(b.type === 'bk-in') {
-                    bkTotalBal += b.amount;
-                    if(b.month === currentMonth && b.year === currentYear) bkInMonth += b.amount;
-                } else {
-                    bkTotalBal -= b.amount;
-                }
-                bkList.innerHTML += `<div class="item">
-                    <div><b style="color:#eee">${b.note}</b><br><small style="color:#444">${b.date}</small></div>
-                    <div style="color:${b.type==='bk-in'?'#e2136e':'#ff4b2b'}; font-weight:bold">৳${b.amount} <button class="del-btn" onclick="deleteRecord(${b.id}, 'bkash')">×</button></div>
-                </div>`;
+                if(b.type === 'bk-in') { bkTotalBal += b.amount; if(b.month === currentMonth && b.year === currentYear) bkInMonth += b.amount; }
+                else { bkTotalBal -= b.amount; }
+                bkList.innerHTML += `<div class="item"><div><b>${b.note}</b><br><small>${b.date}</small></div><div style="color:${b.type==='bk-in'?'#e2136e':'#ff4b2b'}; font-weight:bold">৳${b.amount} <button class="del-btn" onclick="deleteRecord(${b.id}, 'bkash')">×</button></div></div>`;
             });
 
-            // Dues
             const dList = document.getElementById('due-list'); dList.innerHTML = '';
-            (appData.dues || []).forEach(d => {
-                totalDue += d.amount;
-                dList.innerHTML += `<div class="item">
-                    <div><b style="color:#eee">${d.name}</b><br><small style="color:#444">${d.date}</small></div>
-                    <div style="color:#f1c40f; font-weight:bold">৳${d.amount} <button class="del-btn" onclick="deleteRecord(${d.id}, 'due')">×</button></div>
-                </div>`;
-            });
+            (appData.dues || []).forEach(d => { totalDue += d.amount; dList.innerHTML += `<div class="item"><div><b>${d.name}</b><br><small>${d.date}</small></div><div style="color:#f1c40f; font-weight:bold">৳${d.amount} <button class="del-btn" onclick="deleteRecord(${d.id}, 'due')">×</button></div></div>`; });
 
             document.getElementById('today-net-profit').innerText = `৳ ${todayInc - todayExp}`;
-            document.getElementById('total-profit').innerText = `৳ ${totalInc - totalExp}`;
-            document.getElementById('total-income').innerText = `৳ ${totalInc}`;
-            document.getElementById('total-expense').innerText = `৳ ${totalExp}`;
             document.getElementById('today-income').innerText = `৳ ${todayInc}`;
             document.getElementById('today-expense').innerText = `৳ ${todayExp}`;
-            document.getElementById('total-due-stat').innerText = `৳ ${totalDue}`;
-            
-            // Update bKash Stats
+            document.getElementById('yest-income').innerText = `৳ ${yestInc}`;
+            document.getElementById('yest-expense').innerText = `৳ ${yestExp}`;
             document.getElementById('bkash-in-month').innerText = `৳ ${bkInMonth}`;
             document.getElementById('bkash-balance').innerText = `৳ ${bkTotalBal}`;
+            document.getElementById('total-income').innerText = `৳ ${totalInc}`;
+            document.getElementById('total-expense').innerText = `৳ ${totalExp}`;
+            document.getElementById('total-profit').innerText = `৳ ${totalInc - totalExp}`;
+            document.getElementById('total-due-stat').innerText = `৳ ${totalDue}`;
         }
 
-        function showToast(msg) {
-            const t = document.getElementById('update-toast');
-            t.innerText = msg; t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
-        }
+        function showToast(msg) { const t = document.getElementById('update-toast'); t.innerText = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000); }
         window.onload = syncData;
     </script>
 </body>
